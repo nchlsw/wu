@@ -28,3 +28,5 @@ const indexOfDuplicate = (books, val) => {
 let duplicateIndexOf = indexOfDuplicate(books, "Harry Potter");
 
 console.log(duplicateIndexOf);
+
+// .find duplicate
