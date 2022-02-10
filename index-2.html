@@ -119,6 +119,9 @@
         new Employee("Bill", "bill@mail.com", 45, "UI/UX"),
         new Employee("Seto", "seto@mail.com", 23, "Digital Marketing"),
       ];
+
+      let databaseCopy = [...employeeData]
+
       const renderData = (newEmployeeData = []) => {
         let htmlResult = "";
 
@@ -230,8 +233,9 @@
        })
         renderData(searchedData);
       } 
-      let databaseCopy = [...employeeData]
+      // let databaseCopy = [...employeeData]
       const sortName = () => {
+        let databaseCopy = [...employeeData]
         let sortedName = []
         let sortOrderInput= document.getElementById("sortOrder").value
         if (sortOrderInput == "Ascending"){
@@ -250,9 +254,11 @@
               }
               } ) 
               }
-              renderData(sortedName)
-    }
-    const sortAge = () => {
+              renderData(databaseCopy)
+            }
+      const sortAge = () => {
+        let databaseCopy = [...employeeData]
+        let sortedAge = []
         let sortOrderInput= document.getElementById("sortOrder").value
         if (sortOrderInput == "Ascending"){
             sortedAge = databaseCopy.sort((a, b) => {
@@ -270,12 +276,8 @@
               }
               } ) 
               }
-              renderData(sortedAge)
+              renderData(databaseCopy)
             }
-
-       
-      
-      
     </script>
   </body>
 </html>
