@@ -18,15 +18,26 @@
 // console.log(index);
 
 const books = ["LOTR", "Harry Potter", "Sherlock", "Naruto"];
-const indexOfDuplicate = (books, val) => {
-  for (let i = 0; i < books.length; i++) {
-    if (books[i] == val) {
-      return i;
+// const indexOfDuplicate = (arr, val) => {
+//   for (let i = 0; i < arr.length; i++) {
+//     if (arr[i] == val) {
+//       return i;
+//     }
+//   }
+// };
+// let duplicateIndexOf = indexOfDuplicate(books, "Harry Potter");
+
+// console.log(duplicateIndexOf);
+
+// .find duplicate
+
+const findDuplicate = (arr, val) => {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] == val) {
+      return arr[i];
     }
   }
 };
-let duplicateIndexOf = indexOfDuplicate(books, "Harry Potter");
 
-console.log(duplicateIndexOf);
-
-// .find duplicate
+let findBook = findDuplicate(books, "LOTR");
+console.log(findBook);
