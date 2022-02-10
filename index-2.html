@@ -67,6 +67,24 @@
         <button onclick="searchEmployeeName()">Search Employee</button>
       </fieldset>
 
+
+      <br>  
+
+      <fieldset>
+        <legend>Sort Employee</legend>
+        <label for="sortOrder">Order</label>
+        <select id="sortOrder">
+          <option value="Ascending">Ascending</option>
+          <option value="Descending">Descending</option>
+        </select>
+        <br />
+        <br />
+        <button onclick="sortName()">Sort Employee By Name</button>
+        <button onclick="sortAge()">Sort Employee By Age</button>
+        <button onclick="renderData(employeeData)">Reset Sort</button>
+      </fieldset>
+
+      <table>
       <caption>
         Employee Database
       </caption>
@@ -81,46 +99,10 @@
       </thead>
 
       <tbody id="tableData">
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td><button onclick="editData()">Edit</button></td>
-          <td><button onclick="deleteData()">Delete</button></td>
-        </tr>
-      </tbody>
-    </table>
+      </table>
+       
 
-    <br />
-    <br />
-
-    <table>
-      <caption>
-        Search Results
-      </caption>
-      <thead>
-        <tr>
-          <th>No</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Age</th>
-          <th>Occupation</th>
-        </tr>
-      </thead>
-
-      <tbody id="searchResult">
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
-
+  
     <script>
       class Employee {
         constructor(fullName, email, age, occupation) {
@@ -237,29 +219,63 @@
         const searchEmployeeOccupationValue =
           document.getElementById("searchOccupation").value;
 
-        let htmlResult = "";
-        employeeData.forEach((val, idx) => {
-          if (
+       let searchedData = employeeData.filter((val) => {return (
             val.fullName
               .toLowerCase()
               .includes(searchEmployeeNameValue.toLowerCase()) &&
             val.occupation
               .toLowerCase()
               .includes(searchEmployeeOccupationValue.toLowerCase())
-          ) {
-            htmlResult += `
-              <tr>
-              <td>${idx + 1}</td>
-              <td>${val.fullName}</td>
-              <td>${val.email}</td>
-              <td>${val.age}</td>
-              <td>${val.occupation}</td>
-              </tr>`;
-          }
-        });
-        document.getElementById("searchResult").innerHTML = htmlResult;
-        renderData();
-      };
+          ) 
+       })
+        renderData(searchedData);
+      } 
+      let databaseCopy = [...employeeData]
+      const sortName = () => {
+        let sortedName = []
+        let sortOrderInput= document.getElementById("sortOrder").value
+        if (sortOrderInput == "Ascending"){
+            sortedName = databaseCopy.sort((a, b) => {
+              if (a.fullName.toLowerCase() < b.fullName.toLowerCase()) {
+                return -1;
+              } else if (a.fullName.toLowerCase() > b.fullName.toLowerCase()) {
+                return 1; 
+              }
+        }) } else if (sortOrderInput == "Descending") {
+            sortedName = databaseCopy.sort((a, b) => {
+              if (a.fullName.toLowerCase() > b.fullName.toLowerCase()) {
+                return -1;
+              } else if (a.fullName.toLowerCase() < b.fullName.toLowerCase()) {
+                return 1 
+              }
+              } ) 
+              }
+              renderData(sortedName)
+    }
+    const sortAge = () => {
+        let sortOrderInput= document.getElementById("sortOrder").value
+        if (sortOrderInput == "Ascending"){
+            sortedAge = databaseCopy.sort((a, b) => {
+              if (a.age < b.age) {
+                return -1;
+              } else if (a.age > b.age) {
+                return 1; 
+              }
+        }) } else if (sortOrderInput == "Descending") {
+            sortedAge = databaseCopy.sort((a, b) => {
+              if (a.age > b.age) {
+                return -1;
+              } else if (a.age < b.age) {
+                return 1 
+              }
+              } ) 
+              }
+              renderData(sortedAge)
+            }
+
+       
+      
+      
     </script>
   </body>
 </html>
