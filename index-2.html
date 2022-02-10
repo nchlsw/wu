@@ -236,17 +236,16 @@
       // let databaseCopy = [...employeeData]
       const sortName = () => {
         let databaseCopy = [...employeeData]
-        let sortedName = []
         let sortOrderInput= document.getElementById("sortOrder").value
         if (sortOrderInput == "Ascending"){
-            sortedName = databaseCopy.sort((a, b) => {
+              databaseCopy.sort((a, b) => {
               if (a.fullName.toLowerCase() < b.fullName.toLowerCase()) {
                 return -1;
               } else if (a.fullName.toLowerCase() > b.fullName.toLowerCase()) {
                 return 1; 
               }
         }) } else if (sortOrderInput == "Descending") {
-            sortedName = databaseCopy.sort((a, b) => {
+              databaseCopy.sort((a, b) => {
               if (a.fullName.toLowerCase() > b.fullName.toLowerCase()) {
                 return -1;
               } else if (a.fullName.toLowerCase() < b.fullName.toLowerCase()) {
@@ -258,17 +257,16 @@
             }
       const sortAge = () => {
         let databaseCopy = [...employeeData]
-        let sortedAge = []
         let sortOrderInput= document.getElementById("sortOrder").value
         if (sortOrderInput == "Ascending"){
-            sortedAge = databaseCopy.sort((a, b) => {
+           databaseCopy.sort((a, b) => {
               if (a.age < b.age) {
                 return -1;
               } else if (a.age > b.age) {
                 return 1; 
               }
         }) } else if (sortOrderInput == "Descending") {
-            sortedAge = databaseCopy.sort((a, b) => {
+            databaseCopy.sort((a, b) => {
               if (a.age > b.age) {
                 return -1;
               } else if (a.age < b.age) {
