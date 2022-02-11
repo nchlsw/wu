@@ -34,28 +34,26 @@
     </center>
 
     <script>
-      class Stock {
-        constructor(image, name, price, stock, quantity) {
+      class itemData {
+        constructor(image, name, price, stock) {
           (this.name = name),
             (this.price = price),
             (this.stock = stock),
-            (this.quantity = quantity);
+            (this.quantity = 0);
         }
       }
       let newStock = [
-        new Stock(
+        new itemData(
           "https://d29c1z66frfv6c.cloudfront.net/pub/media/catalog/product/large/444b6b8e6d40c8249766694731048fb0b5d22eca_xxl-1.jpg",
           "Premium cotton t-shirt",
           379900,
-          10,
-          0
+          10
         ),
-        new Stock(
+        new itemData(
           "https://d29c1z66frfv6c.cloudfront.net/pub/media/catalog/product/large/fc7f1fa35236905d10b51f655c204eaa4c1bc92a_xxl-1.jpg",
           "Silk Blend Polo Shirt",
           549900,
-          10,
-          0
+          10
         ),
       ];
       let renderData = () => {
@@ -71,8 +69,8 @@
           </td>
           <td>${val.name}</td>
           <td>Rp. ${val.price.toLocaleString()}</td>
-          <td id="qty1">${val.stock}</td>
-          <td val= "0">${val.quantity}</td>
+          <td id="stock">${val.stock}</td>
+          <td id="quantity">${val.quantity}</td>
           <td><button class="btn btn-secondary">-</button></td>
           <td>
             <button onclick="addItem()" class="btn btn-secondary">+</button>
@@ -84,12 +82,14 @@
       renderData();
 
       const addItem = () => {
-        newStock.quantity++;
-        for (let i = 0; i < newStock.length; i++) {
-          if (document.getElementById("")) {
-          }
+        let addQuantity = newStock.quantity;
+        if (addQuantity < 10) {
+          addQuantity + 1;
         }
+        renderData();
+        return;
       };
+      console.log(newStock);
     </script>
   </body>
 </html>
