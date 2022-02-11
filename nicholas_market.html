@@ -27,10 +27,10 @@
       <tbody id="itemData"></tbody>
     </table>
     <center>
-      <button class="btn btn-success">Checkout</button>
+      <button onclick="checkout()" class="btn btn-success">Checkout</button>
       <br />
       <br />
-      <h3>Total Belanja anda: Rp. 100,000</h3>
+      <h3 id="checkoutText"></h3>
     </center>
 
     <script>
@@ -71,9 +71,9 @@
           <td>Rp. ${val.price.toLocaleString()}</td>
           <td id="stock">${val.stock}</td>
           <td id="quantity">${val.quantity}</td>
-          <td><button class="btn btn-secondary">-</button></td>
+          <td><button onclick="minItem(${idx})"class="btn btn-secondary">-</button></td>
           <td>
-            <button onclick="addItem()" class="btn btn-secondary">+</button>
+            <button onclick="addItem(${idx})" class="btn btn-secondary">+</button>
           </td>
         </tr>`;
         });
@@ -81,15 +81,39 @@
       };
       renderData();
 
-      const addItem = () => {
-        let addQuantity = newStock.quantity;
-        if (addQuantity < 10) {
-          addQuantity + 1;
+      
+      const addItem = (index) => {
+        console.log(newStock);
+        if (newStock[index].quantity < newStock[index].stock) {
+          newStock[index].quantity ++;
+        } else {
+          alert("Stock Habis")
         }
         renderData();
         return;
       };
-      console.log(newStock);
+
+      const minItem = (index) => {
+        if (newStock[index].quantity > 0) {
+          newStock[index].quantity --;
+        } 
+        renderData();
+        return;
+      }
+
+      const checkout = () => {
+        let totalItem = 0
+
+      for (let i = 0; i < newStock.length; i++) {
+        totalItem = totalItem + newStock[i].price * newStock[i].quantity
+        const newItemStock = newStock[i].stock - newStock[i].quantity
+        newStock[i].stock = newItemStock
+        newStock[i].quantity = 0
+      }
+      document.getElementById("checkoutText").innerHTML = `Total belanjaan anda : Rp. ${totalItem.toLocaleString()}`
+      renderData()
+      }
+
     </script>
   </body>
 </html>
