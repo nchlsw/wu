@@ -81,13 +81,12 @@
       };
       renderData();
 
-      
       const addItem = (index) => {
         console.log(newStock);
         if (newStock[index].quantity < newStock[index].stock) {
-          newStock[index].quantity ++;
+          newStock[index].quantity++;
         } else {
-          alert("Stock Habis")
+          alert("Stock Habis");
         }
         renderData();
         return;
@@ -95,25 +94,26 @@
 
       const minItem = (index) => {
         if (newStock[index].quantity > 0) {
-          newStock[index].quantity --;
-        } 
+          newStock[index].quantity--;
+        }
         renderData();
         return;
-      }
+      };
 
       const checkout = () => {
-        let totalItem = 0
+        let totalItem = 0;
 
-      for (let i = 0; i < newStock.length; i++) {
-        totalItem = totalItem + newStock[i].price * newStock[i].quantity
-        const newItemStock = newStock[i].stock - newStock[i].quantity
-        newStock[i].stock = newItemStock
-        newStock[i].quantity = 0
-      }
-      document.getElementById("checkoutText").innerHTML = `Total belanjaan anda : Rp. ${totalItem.toLocaleString()}`
-      renderData()
-      }
-
+        for (let i = 0; i < newStock.length; i++) {
+          totalItem += newStock[i].price * newStock[i].quantity;
+          const newItemStock = newStock[i].stock - newStock[i].quantity;
+          newStock[i].stock = newItemStock;
+          newStock[i].quantity = 0;
+        }
+        document.getElementById(
+          "checkoutText"
+        ).innerHTML = `Total belanjaan anda : Rp. ${totalItem.toLocaleString()}`;
+        renderData();
+      };
     </script>
   </body>
 </html>
