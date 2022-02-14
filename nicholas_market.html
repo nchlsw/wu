@@ -30,6 +30,7 @@
       <button onclick="checkout()" class="btn btn-success">Checkout</button>
       <br />
       <br />
+      <h3 id="checkoutTimer"></h3>
       <h3 id="checkoutText"></h3>
       <h3 id="payment"></h3>
     </center>
@@ -110,17 +111,57 @@
           newStock[i].quantity = 0;
         }
 
+        document.getElementById("checkoutTimer").innerHTML = `
+
+        <h3 id="timer"><span id="minutes"></span>:<span id="seconds"></span></h3>`;
         document.getElementById(
           "checkoutText"
         ).innerHTML = `Total belanjaan anda : Rp. ${totalCheckout.toLocaleString()}`;
         document.getElementById(
           "payment"
         ).innerHTML = `Masukkan nominal pembayaran anda : <input type="text" id="paymentAmount"> <button onclick="payment()">Bayar</button>`;
+        let seconds = 05;
+        let minutes = 00;
+        let timer;
+        timer = setInterval(() => {
+          seconds = parseInt(seconds);
+          minutes = parseInt(minutes);
+
+          seconds -= 1;
+
+          if (seconds < 10) {
+            seconds = "0" + seconds;
+          }
+          document.getElementById("seconds").innerHTML = seconds;
+
+          if (seconds == 00) {
+            minutes--;
+            seconds = 59;
+          }
+
+          if (minutes < 10) {
+            minutes = "0" + minutes;
+          }
+
+          document.getElementById("seconds").innerHTML = seconds;
+          document.getElementById("minutes").innerHTML = minutes;
+        }, 1000);
       };
+
+      let stopTimer;
+      const checkOut = (checkedout) => {
+        clearInterval(stopTimer);
+        document.getElementById("timer").innerHTML = "";
+        document.getElementById("payment").innerHTML = "";
+        document.getElementById("checkoutText").innerHTML = "";
+        renderData();
+      };
+
       const payment = () => {
         const paymentValue = document.getElementById("paymentAmount").value;
         if (paymentValue == totalCheckout) {
           alert("Pembayaran Berhasil");
+          checkOut();
         } else if (paymentValue < totalCheckout) {
           let paymentDifference = totalCheckout - paymentValue;
           alert(
@@ -130,6 +171,7 @@
         } else if (paymentValue > totalCheckout) {
           let changeValue = paymentValue - totalCheckout;
           alert(`Kembalian anda sebesar: Rp.${changeValue.toLocaleString()}`);
+          checkOut();
         }
         renderData();
       };
