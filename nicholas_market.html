@@ -148,20 +148,10 @@
         }, 1000);
       };
 
-      let stopTimer;
-      const checkOut = (checkedout) => {
-        clearInterval(stopTimer);
-        document.getElementById("timer").innerHTML = "";
-        document.getElementById("payment").innerHTML = "";
-        document.getElementById("checkoutText").innerHTML = "";
-        renderData();
-      };
-
       const payment = () => {
         const paymentValue = document.getElementById("paymentAmount").value;
         if (paymentValue == totalCheckout) {
           alert("Pembayaran Berhasil");
-          checkOut();
         } else if (paymentValue < totalCheckout) {
           let paymentDifference = totalCheckout - paymentValue;
           alert(
@@ -171,7 +161,6 @@
         } else if (paymentValue > totalCheckout) {
           let changeValue = paymentValue - totalCheckout;
           alert(`Kembalian anda sebesar: Rp.${changeValue.toLocaleString()}`);
-          checkOut();
         }
         renderData();
       };
