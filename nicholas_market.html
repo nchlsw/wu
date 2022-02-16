@@ -142,9 +142,9 @@
 
         document.getElementById("checkout").innerHTML = `
         <h3>Total belanjaan anda : Rp. ${totalPrice.toLocaleString()}</h3>
-        <h3>Waktu bayar anda tersisa : <span id="timer>${seconds}</span></h3>
+        <h3>Waktu bayar anda tersisa : <span id="timer">${seconds}</span></h3>
         <div class="row"> <input id="payment" type="number"> </div>
-        <button onclick="payment()">Pay</button>
+        <div><button onclick="payment()">Pay</button>
         `;
         renderData();
       };
