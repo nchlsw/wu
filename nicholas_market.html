@@ -30,9 +30,7 @@
       <button onclick="checkout()" class="btn btn-success">Checkout</button>
       <br />
       <br />
-      <h3 id="checkoutTimer"></h3>
-      <h3 id="checkoutText"></h3>
-      <h3 id="payment"></h3>
+      <div id="checkout"></div>
     </center>
 
     <script>
@@ -43,6 +41,16 @@
             (this.stock = stock),
             (this.quantity = 0);
         }
+        calculateTotalPrice = () => {
+          return this.quantity * this.price;
+        };
+        checkout = () => {
+          let totalPrice = this.calculateTotalPrice();
+          this.stock -= this.quantity;
+          this.quantity = 0;
+
+          return totalPrice;
+        };
       }
       let newStock = [
         new itemData(
@@ -62,22 +70,22 @@
         let htmlResult = "";
         newStock.forEach((val, idx) => {
           htmlResult += `
-          <tr style="vertical-align: middle">
-          <td>
-            <img
-              width="100px"
-              src= "${val.image}"
-            />
-          </td>
-          <td>${val.name}</td>
-          <td>Rp. ${val.price.toLocaleString()}</td>
-          <td id="stock">${val.stock}</td>
-          <td id="quantity">${val.quantity}</td>
-          <td><button onclick="minItem(${idx})"class="btn btn-secondary">-</button></td>
-          <td>
-            <button onclick="addItem(${idx})" class="btn btn-secondary">+</button>
-          </td>
-        </tr>`;
+              <tr style="vertical-align: middle">
+              <td>
+                <img
+                  width="100px"
+                  src= "${val.image}"
+                />
+              </td>
+              <td>${val.name}</td>
+              <td>Rp. ${val.price.toLocaleString()}</td>
+              <td id="stock">${val.stock}</td>
+              <td id="quantity">${val.quantity}</td>
+              <td><button onclick="minItem(${idx})"class="btn btn-secondary">-</button></td>
+              <td>
+                <button onclick="addItem(${idx})" class="btn btn-secondary">+</button>
+              </td>
+            </tr>`;
         });
         document.getElementById("itemData").innerHTML = htmlResult;
       };
@@ -102,67 +110,69 @@
         return;
       };
 
-      let totalCheckout = 0;
+      const calculateTotalTransaction = () => {
+        let totalPrice = 0;
+        newStock.forEach((val, idx) => {
+          totalPrice += val.calculateTotalPrice();
+        });
+        return totalPrice;
+      };
+
+      let timer;
+      let seconds;
       const checkout = () => {
-        for (let i = 0; i < newStock.length; i++) {
-          totalCheckout += newStock[i].price * newStock[i].quantity;
-          const newItemStock = newStock[i].stock - newStock[i].quantity;
-          newStock[i].stock = newItemStock;
-          newStock[i].quantity = 0;
+        let totalPrice = calculateTotalTransaction();
+
+        if (!totalPrice) {
+          alert("Keranjang belanjaan anda kosong");
+          return;
         }
 
-        document.getElementById("checkoutTimer").innerHTML = `
-
-        <h3 id="timer"><span id="minutes"></span>:<span id="seconds"></span></h3>`;
-        document.getElementById(
-          "checkoutText"
-        ).innerHTML = `Total belanjaan anda : Rp. ${totalCheckout.toLocaleString()}`;
-        document.getElementById(
-          "payment"
-        ).innerHTML = `Masukkan nominal pembayaran anda : <input type="text" id="paymentAmount"> <button onclick="payment()">Bayar</button>`;
-        let seconds = 05;
-        let minutes = 00;
-        let timer;
+        seconds = 15;
         timer = setInterval(() => {
-          seconds = parseInt(seconds);
-          minutes = parseInt(minutes);
+          if (seconds <= 0) {
+            alert("Waktu pembayaran anda habis");
+            clearInterval(timer);
+            document.getElementById("checkout").innerHTML = "";
+          }
 
+          document.getElementById("timer").innerHTML = seconds;
           seconds -= 1;
-
-          if (seconds < 10) {
-            seconds = "0" + seconds;
-          }
-          document.getElementById("seconds").innerHTML = seconds;
-
-          if (seconds == 00) {
-            minutes--;
-            seconds = 59;
-          }
-
-          if (minutes < 10) {
-            minutes = "0" + minutes;
-          }
-
-          document.getElementById("seconds").innerHTML = seconds;
-          document.getElementById("minutes").innerHTML = minutes;
         }, 1000);
+
+        document.getElementById("checkout").innerHTML = `
+        <h3>Total belanjaan anda : Rp. ${totalPrice.toLocaleString()}</h3>
+        <h3>Waktu bayar anda tersisa : <span id="timer>${seconds}</span></h3>
+        <div class="row"> <input id="payment" type="number"> </div>
+        <button onclick="payment()">Pay</button>
+        `;
+        renderData();
       };
 
       const payment = () => {
-        const paymentValue = document.getElementById("paymentAmount").value;
-        if (paymentValue == totalCheckout) {
-          alert("Pembayaran Berhasil");
-        } else if (paymentValue < totalCheckout) {
-          let paymentDifference = totalCheckout - paymentValue;
+        let paymentInput = document.getElementById("payment").value;
+        paymentInput = parseInt(paymentInput);
+
+        let totalPrice = calculateTotalTransaction();
+
+        if (paymentInput >= totalPrice) {
           alert(
-            `Pembayaran anda kurang: Rp. ${paymentDifference.toLocaleString()}`
+            `Terima kasih susah berbelanja, kembalian anda : Rp. ${(
+              paymentInput - totalPrice
+            ).toLocaleString()}`
           );
-          return;
-        } else if (paymentValue > totalCheckout) {
-          let changeValue = paymentValue - totalCheckout;
-          alert(`Kembalian anda sebesar: Rp.${changeValue.toLocaleString()}`);
+
+          newStock.forEach((val) => {
+            val.checkout();
+          });
+          renderData();
+          clearInterval(timer);
+          document.getElementById("checkout").innerHTML = "";
+        } else if (paymentInput < totalPrice) {
+          alert(
+            `Uang anda kurang : ${(totalPrice - paymentInput).toLocaleString()}`
+          );
         }
-        renderData();
       };
     </script>
   </body>
